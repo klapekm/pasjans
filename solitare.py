@@ -31,37 +31,43 @@ for g in karty:
 
 # tasownaie kart
 random.shuffle(stos)
-kolumna_1 = []
+
+kolumny = []
 
 for i in range(LICZBA_KOLUMN):
-	kolor = random.randint(0, 3)
-	karta = random.choice(stos)
-	kolumna_1.append(karta)
-	stos.remove(karta)
+	kolumny.append([])
+	for a in range(LICZBA_KOLUMN - i):
+		kolor = random.randint(0, 3)
+		karta = random.choice(stos)
+		kolumny[i].append(karta)
+		stos.remove(karta)
 
-
-print('##', end='\n'*2)
+print('##', end='\n' * 2)
 
 while True:
-	for i in range(len(kolumna_1)-1):
-		print('##')
+	for i in range(len(max(kolumny, key=len))):
+		for k in range(len(kolumny)):
+			if len(kolumny[k]) > i:
+				if not kolumny[k][i] is kolumny[k][-1]:
+					print('##', end=' ')
+				else:
+					print(kolumny[k][-1], end='  ')
+			else:
+				pass
+		print()
 
-	print(kolumna_1[-1])
 	user_input = input()
 	print()
 	if user_input == ' ':
 		stos.append(stos[0])
 		stos.remove(stos[0])
 		print()
-	elif user_input == '1':
-		kolumna_1.append(stos[-1])
+	elif len(user_input) == 1 and user_input.isdigit() and 11 > int(user_input) > 0:
+		kolumny[int(user_input)].append(stos[-1])
 		stos.remove(stos[-1])
 	elif user_input == '1 2':
-		kolumna_1.remove(kolumna_1[-1])
+		kolumny[0].remove(kolumny[0][-1])
 	else:
 		print('Taka akcja nie istnieje')
 	print('------------------------')
-	print(stos[-1], end='\n'*2)
-
-
-
+	print(stos[-1], end='\n' * 2)
