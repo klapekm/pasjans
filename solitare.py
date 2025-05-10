@@ -34,52 +34,61 @@ random.shuffle(stos)
 
 kolumny = []
 
+# dodawanie losowych kart do każdej kolumny
 for i in range(LICZBA_KOLUMN):
-	kolumny.append([])
+	kolumny.append({})
 	for a in range(i+1):
 		kolor = random.randint(0, 3)
 		karta = random.choice(stos)
-		kolumny[i].append(karta)
+		if a == i:
+			kolumny[i][karta] = True
+		else:
+			kolumny[i][karta] = False
 		stos.remove(karta)
 
+# pętla główna
 gameOn = True
-
 while gameOn:
 	print('------------------------')
+	# wypisanie stosu
 	print(stos[-1], end='\n' * 2)
+	# wypisywanie kolumn
 	for i in range(len(max(kolumny, key=len))):
-		for k in range(len(kolumny)):
-			if len(kolumny[k]) > i:
-				if not kolumny[k][i] is kolumny[k][-1]:
+		for k in kolumny:
+			if len(k) > i:
+				karta = list(k.keys())[i]
+				face_up = k[karta]
+				if not face_up:
 					print('###', end='  ')
 				else:
-					if len(kolumny[k][-1]) == 2:
-						print(kolumny[k][-1], end='   ')
+					if len(str(karta)) == 2:
+						print(karta, end='   ')
 					else:
-						print(kolumny[k][-1], end='  ')
+						print(karta, end='  ')
 			else:
 				print('     ', end='')
 		print()
-
-	user_input = input()
-	print()
+	print('------------------------')
+	user_input = input("Co teraz?: ")
+	# wykonywanie komend
 	if user_input == ' ':
 		stos.append(stos[0])
 		stos.remove(stos[0])
 		print()
-	elif user_input == 'LEAVE':
+	elif user_input == 'Q' or user_input == 'q':
 		gameOn = False
-	elif len(user_input) == 1 and user_input.isdigit() and LICZBA_KOLUMN+17 > int(user_input) > -1:
+	elif len(user_input) == 1 and user_input.isdigit() and LICZBA_KOLUMN+1 > int(user_input) > -1:
 		print(int(user_input)-1)
-		kolumny[int(user_input)-1].append(stos[-1])
+		kolumny[int(user_input)-1][(stos[-1])] = True
 		stos.remove(stos[-1])
 	elif len(user_input) == 3:
 		a, b = user_input.split()
 		a = int(a)
 		b = int(b)
 		if -1 < a < LICZBA_KOLUMN+1 and -1 < b < LICZBA_KOLUMN+1:
-			kolumny[b - 1].append(kolumny[a - 1][-1])
-			kolumny[a-1].remove(kolumny[a-1][-1])
+			kolumny[b - 1][list(kolumny[a - 1])[-1]] = True
+			kolumny[a-1].pop(list(kolumny[a-1])[-1])
+			kolumny[a - 1][list(kolumny[a-1])[-1]] = True
 		else:
 			print('Taka akcja nie istnieje')
 	else:
