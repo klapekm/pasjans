@@ -36,24 +36,29 @@ kolumny = []
 
 for i in range(LICZBA_KOLUMN):
 	kolumny.append([])
-	for a in range(LICZBA_KOLUMN - i):
+	for a in range(i+1):
 		kolor = random.randint(0, 3)
 		karta = random.choice(stos)
 		kolumny[i].append(karta)
 		stos.remove(karta)
 
-print('##', end='\n' * 2)
+gameOn = True
 
-while True:
+while gameOn:
+	print('------------------------')
+	print(stos[-1], end='\n' * 2)
 	for i in range(len(max(kolumny, key=len))):
 		for k in range(len(kolumny)):
 			if len(kolumny[k]) > i:
 				if not kolumny[k][i] is kolumny[k][-1]:
-					print('##', end=' ')
+					print('###', end='  ')
 				else:
-					print(kolumny[k][-1], end='  ')
+					if len(kolumny[k][-1]) == 2:
+						print(kolumny[k][-1], end='   ')
+					else:
+						print(kolumny[k][-1], end='  ')
 			else:
-				pass
+				print('     ', end='')
 		print()
 
 	user_input = input()
@@ -62,12 +67,21 @@ while True:
 		stos.append(stos[0])
 		stos.remove(stos[0])
 		print()
-	elif len(user_input) == 1 and user_input.isdigit() and 11 > int(user_input) > 0:
-		kolumny[int(user_input)].append(stos[-1])
+	elif user_input == 'LEAVE':
+		gameOn = False
+	elif len(user_input) == 1 and user_input.isdigit() and LICZBA_KOLUMN+17 > int(user_input) > -1:
+		print(int(user_input)-1)
+		kolumny[int(user_input)-1].append(stos[-1])
 		stos.remove(stos[-1])
-	elif user_input == '1 2':
-		kolumny[0].remove(kolumny[0][-1])
+	elif len(user_input) == 3:
+		a, b = user_input.split()
+		a = int(a)
+		b = int(b)
+		if -1 < a < LICZBA_KOLUMN+1 and -1 < b < LICZBA_KOLUMN+1:
+			kolumny[b - 1].append(kolumny[a - 1][-1])
+			kolumny[a-1].remove(kolumny[a-1][-1])
+		else:
+			print('Taka akcja nie istnieje')
 	else:
 		print('Taka akcja nie istnieje')
-	print('------------------------')
-	print(stos[-1], end='\n' * 2)
+
