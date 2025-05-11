@@ -4,15 +4,26 @@ LICZBA_KOLUMN = 7
 
 # symbole do tworzenia kart
 symbole = ['♥', '♦', '♠', '♣']
-
+print(symbole)
 # słowniki kart i ich wartości
-karty_trefl = {}
+karty_kier = {}
 karty_karo = {}
 karty_pik = {}
-karty_kier = {}
+karty_trefl = {}
 
 # lista słowników kart
 karty = [karty_kier, karty_karo, karty_pik, karty_trefl]
+
+# funkcja do sprawdzania czy daną kartę można przełożyć
+def mozna_polozyc(a, b):
+	karta_a = a
+	karta_b = b
+	if (symbole.index(karta_a[0]) in [0, 1] and symbole.index(karta_b[0]) in [2, 3]) or (symbole.index(karta_a[0]) in [2, 3] and symbole.index(karta_b[0]) in [0, 1]):
+		if karty[symbole.index(karta_b[0])][karta_b] == karty[symbole.index(karta_a[0])][karta_a] - 1:
+			return True
+		else:
+			return False
+
 
 # tworzenie i dodawanie kart do odpowiednich grup
 for k in karty:
@@ -36,14 +47,13 @@ kolumny = []
 
 # dodawanie losowych kart do każdej kolumny
 for i in range(LICZBA_KOLUMN):
-	kolumny.append({})
+	kolumny.append([])
 	for a in range(i+1):
-		kolor = random.randint(0, 3)
 		karta = random.choice(stos)
 		if a == i:
-			kolumny[i][karta] = True
+			kolumny[i].append((karta, True))
 		else:
-			kolumny[i][karta] = False
+			kolumny[i].append((karta, False))
 		stos.remove(karta)
 
 # pętla główna
@@ -53,20 +63,23 @@ while gameOn:
 	# wypisanie stosu
 	print(stos[-1], end='\n' * 2)
 	# wypisywanie kolumn
+	for i in range(LICZBA_KOLUMN):
+		print(i+1, end=4*' ')
+	print()
 	for i in range(len(max(kolumny, key=len))):
 		for k in kolumny:
 			if len(k) > i:
-				karta = list(k.keys())[i]
-				face_up = k[karta]
+				karta = k[i][0]
+				face_up = k[i][1]
 				if not face_up:
-					print('###', end='  ')
+					print('###', end=2*' ')
 				else:
 					if len(str(karta)) == 2:
-						print(karta, end='   ')
+						print(karta, end=3*' ')
 					else:
-						print(karta, end='  ')
+						print(karta, end=2*' ')
 			else:
-				print('     ', end='')
+				print(5*' ', end='')
 		print()
 	print('------------------------')
 	user_input = input("Co teraz?: ")
@@ -75,22 +88,27 @@ while gameOn:
 		stos.append(stos[0])
 		stos.remove(stos[0])
 		print()
+	# wyjście z gry
 	elif user_input == 'Q' or user_input == 'q':
 		gameOn = False
-	elif len(user_input) == 1 and user_input.isdigit() and LICZBA_KOLUMN+1 > int(user_input) > -1:
+	# przekładanie z stosu na jedną z kolumn
+	elif len(user_input) == 1 and user_input.isdigit() and LICZBA_KOLUMN+1 > int(user_input) > -1 and mozna_polozyc(kolumny[int(user_input)-1][-1][0], stos[-1]):
 		print(int(user_input)-1)
-		kolumny[int(user_input)-1][(stos[-1])] = True
+		kolumny[int(user_input)-1].append((stos[-1], True))
 		stos.remove(stos[-1])
+	# przekładanie z kolumny na kolumnę
 	elif len(user_input) == 3:
 		a, b = user_input.split()
-		a = int(a)
-		b = int(b)
+		a = kolumny[a - 1][-1][0]
+		b = kolumny[b - 1][-1][0]
 		if -1 < a < LICZBA_KOLUMN+1 and -1 < b < LICZBA_KOLUMN+1:
-			kolumny[b - 1][list(kolumny[a - 1])[-1]] = True
-			kolumny[a-1].pop(list(kolumny[a-1])[-1])
-			kolumny[a - 1][list(kolumny[a-1])[-1]] = True
+			if mozna_polozyc(a, b):
+				kolumny[b - 1].append((kolumny[a - 1][-1][0],  True))
+				kolumny[a - 1].remove(kolumny[a-1][-1])
+				if not len(kolumny[a - 1]) == 0:
+					kolumny[a - 1][-1] = (kolumny[a-1][-1][0], True)
 		else:
-			print('Taka akcja nie istnieje')
+			print('Taka akcja nie istnieje lub jest niemozliwa.')
 	else:
-		print('Taka akcja nie istnieje')
+		print('Taka akcja nie istnieje lub jest niemozliwa.')
 
