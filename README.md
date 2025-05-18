@@ -9,6 +9,8 @@ Na kolumnach karty muszą być ułozone on największej do najmniejszej oraz z n
  ![Początek gry](screenshoty/begining_of_the_game.png)
 
 ## Jak grać?
+Po pobraniu należy rozpakować orza odpalić plik solitare.py. Komendy wpisuje się na dole terminalu. Komendy są następujące:
+
 Przenoszenie kart:
 Z kolumny na kolumnę: x y z albo y z
 - x liczba kart,
