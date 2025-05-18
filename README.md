@@ -4,6 +4,7 @@ Opisana tutaj gra jest solitare klondike.
 Na początku gry tworzy się siedem stosów z rosnącą ilością kart w każdym natępnym, zaczynając od jednej. Każda karta na górze kolumny jest odsłonięta, a reszta zakryta.
 Z pozostałych kart tworzy się stos rezerwowy. Żeby wygrac należy przełożyć wszystkie karty na stosy końcowe zwracając uwagę na na ich kolejność(muszą byc od asa do króla) oraz kolor (muszą być tego samego koloru).
 Na kolumnach karty muszą być ułozone on największej do najmniejszej oraz z naprzemiennymi kolorami (czarny na czerwony lub czerwony na czarny). Na puste kolumny można położyć jedynie króla.
+ 	![Początek gry](screenshoty/.jpg)
 
 ## Jak grać?
 Przenoszenie kart:
@@ -21,3 +22,5 @@ Z kolumny na stos końcowy: x y*
 
 Ze stosu na stos końcowy: x*
 - x na który stos końcowy
+
+Następna karta ze stosu: spacja
