@@ -1,5 +1,5 @@
 # Pasjans w Pythonie
-By pobrać kod proszę kliknąć [tutaj]([https://www.example.com](https://github.com/klapekm/pasjans.git))
+By pobrać kod proszę kliknąć [tutaj](https://github.com/klapekm/pasjans.git)
 ## Opis Gry
 Opisana tutaj gra jest solitare klondike.
 Na początku gry tworzy się siedem stosów z rosnącą ilością kart w każdym natępnym, zaczynając od jednej. Każda karta na górze kolumny jest odsłonięta, a reszta zakryta.
